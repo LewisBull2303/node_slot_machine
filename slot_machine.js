@@ -31,7 +31,7 @@ function getNumberOfLines(){
         const numberOfLines = parseFloat(lines);
 
         //Check if the Number is valid and if not print invalid
-        if(isNaN(numberOfLines) || numberOfLines <= 0 || numberOfLines >= 3) {
+        if(isNaN(numberOfLines) || numberOfLines <= 0 || numberOfLines > 3) {
             console.log("Invalid number of lines, try again.");
         } else {
             //Returns the amount of lines
@@ -40,9 +40,32 @@ function getNumberOfLines(){
     }
 }
 
+//define a funtion to get the total bet
+function getBet(balance, lines){
+    //Loop Until the user enters a valid amount
+    while (true){
+        //Ask the user for the amount they want to bet per line
+        const bet = prompt("Enter the bet per line: ");
+
+        //Convert the bet amount into a float
+        const numberBet = parseFloat(bet);
+
+        //Check if the Number is valid based on how many lines they chose and their balance and if not print invalid
+        if(isNaN(numberBet) || numberBet <= 0 || numberBet > balance / lines) {
+            console.log("Invalid bet, try again.");
+        } else {
+            //Returns the bet amount
+            return numberBet;
+        }
+    }
+}
+
 
 //Sets depositAmount Equal to what was returns in the Function
-const depositAmount = deposit_money();
+let balance = deposit_money();
 
 //Sets Number of Lines equal to the amount that was returned in the function
 const numberOfLines = getNumberOfLines();
+
+//Gets the users total bet based on how much they put in the balance and the number of lines
+const bet = getBet(balance, numberOfLines);
