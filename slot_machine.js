@@ -142,41 +142,57 @@ function printRows(rows){
 
 function getWinnings(rows, bet, lines){
     let winnings = 0;
-
-    for(let row = 0; row < lines; row++){
-        const symbols = rows[row];
-        let allSame = true;
+    
+    for (let row = 0; row < lines; row++) {
+      const symbols = rows[row];
+      let allSame = true;
         //loop through all of the symbols
-        for (const symbol of symbols){
-            //if the symbols are not the same set allSame to false 
-            if (symbols != symbols[0]){
-                allSame = false;
-                break;
-            }
+      for (const symbol of symbols) {
+        //if the symbols are not the same set allSame to false 
+        if (symbol != symbols[0]) {
+          allSame = false;
+          break;
         }
-        //checks if the symbols are all the same
-        if (allSame){
-            //if the symbols are all the same mutiply the bet by the value of the symbol
-            winnings += bet * SYMBOL_VALUES[symbols[0]]
-        }
+      }
+      //checks if the symbols are all the same
+      if (allSame) {
+        //if the symbols are all the same mutiply the bet by the value of the symbol
+        winnings += bet * SYMBOL_VALUES[symbols[0]];
+      }
     }
-
+  
     return winnings;
-}
+  };
 
 
-//Sets depositAmount Equal to what was returns in the Function
-let balance = deposit_money();
-
-//Sets Number of Lines equal to the amount that was returned in the function
-const numberOfLines = getNumberOfLines();
-
-//Gets the users total bet based on how much they put in the balance and the number of lines
-const bet = getBet(balance, numberOfLines);
-
-const reels = spin();
-const rows = transpose(reels);
-printRows(rows);
-const winnings = getWinnings(rows, bet, numberOflines);
-print("You Won, $"+ winnings.toString());
-
+  function game() {
+    //Sets depositAmount Equal to what was returns in the Function
+    let balance = deposit_money();
+  
+    //loop the game
+    while (true) {
+      console.log("You have a balance of $" + balance);
+      //Sets Number of Lines equal to the amount that was returned in the function
+      const numberOfLines = getNumberOfLines();
+      //Gets the users total bet based on how much they put in the balance and the number of lines
+      const bet = getBet(balance, numberOfLines);
+      balance -= bet * numberOfLines;
+      const reels = spin();
+      const rows = transpose(reels);
+      printRows(rows);
+      const winnings = getWinnings(rows, bet, numberOfLines);
+      balance += winnings;
+      console.log("You won, $" + winnings.toString());
+  
+      if (balance <= 0) {
+        console.log("You ran out of money!");
+        break;
+      }
+  
+      const playAgain = prompt("Do you want to play again (y/n)? ");
+  
+      if (playAgain != "y") break;
+    }
+  };
+  
+  game();
