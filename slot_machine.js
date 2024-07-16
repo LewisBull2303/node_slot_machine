@@ -1,6 +1,28 @@
 //Prompt the User
 const prompt = require("prompt-sync")();
 
+//Init the number or rows and Columns
+const ROWS = 3;
+const COLS = 3;
+
+//Init the symbols and how many there are
+const SYMBOLS_COUNT = {
+    "🍒": 4,
+    "🍌": 4,
+    "🍊": 6,
+    "🍍": 8,
+    "🎰": 3,
+}
+
+//give the symbols values
+const SYMBOL_VALUES = {
+    "🍒": 5,
+    "🍌": 5,
+    "🍊": 3,
+    "🍍": 2,
+    "🎰": 10,
+}
+
 //Create a Fucntion to Deposit the Money
 function deposit_money(){
     //Loop Until the user enters a valid amount
@@ -60,6 +82,34 @@ function getBet(balance, lines){
     }
 }
 
+//Define a function to spin the slot machine
+function spin(){
+    const symbols = [];
+    //for all of the symbols and the count of the symbols count variable
+    for (const[symbol, count] of Object.entries(SYMBOLS_COUNT)){
+        for (let i = 0; i < count; i++){
+            //push the symbols to the list to store all possible symbols
+            symbols.push(symbol);
+        }
+    }
+
+    //init the slot machine rows
+    const reels = [[], [], []];
+    for (let i = 0; i < COLS; i++){
+        reels.push([]);
+        const reelSymbols = [...symbols];
+        for (let j = 0; j < ROWS; j++){
+            const randomIndex = Math.floor(Math.random() * reelSymbols.length);
+            const selectedSymbol = reelSymbols[randomIndex];
+            reels[i].push(selectedSymbol);
+            reelSymbols.splice(randomIndex, 1);
+        }
+    }
+    return reels;
+}
+
+const reels = spin();
+console.log(reels)
 
 //Sets depositAmount Equal to what was returns in the Function
 let balance = deposit_money();
