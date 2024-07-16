@@ -30,7 +30,7 @@ function deposit_money(){
         //Ask the user for a deposit ammount
         const depositAmount = prompt("Enter a deposit amount: ");
 
-        //Convert the amount from a String into a Number
+        //Convert the amount from a String into a Number;;;;;;;;
         const numberDepositAmount = parseFloat(depositAmount);
 
         //Check if the Number is valid and if not print invalid 
@@ -49,7 +49,7 @@ function getNumberOfLines(){
         //Ask the user for the amount of lines that wish to bet on
         const lines = prompt("Enter the number of lines you wish to bet on(1-3): ");
 
-        //Convert the line amount from a String into a Number
+        //Convert the line amount from a String into a Number;;;;;;;;
         const numberOfLines = parseFloat(lines);
 
         //Check if the Number is valid and if not print invalid
@@ -69,7 +69,7 @@ function getBet(balance, lines){
         //Ask the user for the amount they want to bet per line
         const bet = prompt("Enter the bet per line: ");
 
-        //Convert the bet amount into a float
+        //Convert the bet amount into a float;;;;;;;;
         const numberBet = parseFloat(bet);
 
         //Check if the Number is valid based on how many lines they chose and their balance and if not print invalid
@@ -122,7 +122,48 @@ function transpose(reels){
     }
   
     return rows;
-  };
+};
+
+//Define a function to print the rows correctly
+function printRows(rows){
+    //loop through all of the rows
+    for (const row of rows) {
+      let rowString = "";
+      for (const [i, symbol] of row.entries()) {
+        rowString += symbol;
+        if (i != row.length - 1) {
+          rowString += " | ";
+        }
+      }
+      console.log(rowString);
+    }
+};
+
+
+function getWinnings(rows, bet, lines){
+    let winnings = 0;
+
+    for(let row = 0; row < lines; row++){
+        const symbols = rows[row];
+        let allSame = true;
+        //loop through all of the symbols
+        for (const symbol of symbols){
+            //if the symbols are not the same set allSame to false 
+            if (symbols != symbols[0]){
+                allSame = false;
+                break;
+            }
+        }
+        //checks if the symbols are all the same
+        if (allSame){
+            //if the symbols are all the same mutiply the bet by the value of the symbol
+            winnings += bet * SYMBOL_VALUES[symbols[0]]
+        }
+    }
+
+    return winnings;
+}
+
 
 //Sets depositAmount Equal to what was returns in the Function
 let balance = deposit_money();
@@ -135,5 +176,7 @@ const bet = getBet(balance, numberOfLines);
 
 const reels = spin();
 const rows = transpose(reels);
-console.log(reels);
-console.log(rows);
+printRows(rows);
+const winnings = getWinnings(rows, bet, numberOflines);
+print("You Won, $"+ winnings.toString());
+
